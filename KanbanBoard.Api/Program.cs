@@ -1,7 +1,9 @@
+using FluentValidation;
 using KanbanBoard.Api.Data;
 using KanbanBoard.Api.Mappings;
 using KanbanBoard.Api.Repositories;
 using KanbanBoard.Api.Services;
+using KanbanBoard.Api.Validators;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +22,12 @@ builder.Services.AddScoped<ICardService, CardService>();
 
 builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 builder.Services.AddScoped<IBoardService, BoardService>();
+
+// FluentValidation Kayýtlarý
+
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
+// builder.Services.AddValidatorsFromAssemblyContaining<CreateBoardDtoValidator>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
