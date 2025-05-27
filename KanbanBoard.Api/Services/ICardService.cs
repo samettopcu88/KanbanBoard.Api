@@ -8,5 +8,8 @@ namespace KanbanBoard.Api.Services
         Task<CardDto> MoveCardAsync(UpdateCardPositionDto dto);
         Task<List<CardDto>> GetCardsByListAsync(int taskListId);
         Task DeleteCardAsync(int id);
+
+        Task<CardDto> UpdateCardAsync(UpdateCardDto dto);
+
     }
 }

@@ -68,5 +68,19 @@ namespace KanbanBoard.Api.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateCard([FromBody] UpdateCardDto dto)
+        {
+            try
+            {
+                var updatedCard = await _cardService.UpdateCardAsync(dto);
+                return Ok(updatedCard);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }

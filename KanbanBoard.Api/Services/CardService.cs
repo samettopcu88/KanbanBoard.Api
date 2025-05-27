@@ -75,5 +75,20 @@ namespace KanbanBoard.Api.Services
             await _cardRepository.DeleteAsync(card);
             await _cardRepository.SaveChangesAsync();
         }
+
+        public async Task<CardDto> UpdateCardAsync(UpdateCardDto dto)
+        {
+            var card = await _cardRepository.GetByIdAsync(dto.Id);
+            if (card == null)
+                throw new Exception("Card not found");
+
+            card.Title = dto.Title;
+            card.Description = dto.Description;
+            card.Color = dto.Color;
+
+            await _cardRepository.SaveChangesAsync();
+
+            return _mapper.Map<CardDto>(card);
+        }
     }
 }
