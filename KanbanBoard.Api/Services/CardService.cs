@@ -22,14 +22,24 @@ namespace KanbanBoard.Api.Services
 
         public async Task<CardDto> CreateCardAsync(CreateCardDto dto)
         {
-            var list = await _context.TaskLists.Include(l => l.Cards)
-                .FirstOrDefaultAsync(l => l.Id == dto.TaskListId);
+            // Backlog listesini bulmak için
+            var backlogList = await _context.TaskLists
+                .Include(l => l.Cards)
+                .Include(l => l.Board)
+                .Where(l => l.Board.PublicId == dto.BoardPublicId && l.Name == "Backlog")
+                .FirstOrDefaultAsync();
 
-            if (list == null)
-                throw new Exception("TaskList not found");
+            if (backlogList == null)
+                throw new Exception("Backlog list not found for the given board.");
 
-            var card = _mapper.Map<Card>(dto);
-            card.SortOrder = list.Cards.Count + 1;
+            var card = new Card
+            {
+                Title = dto.Title,
+                Description = dto.Description,
+                Color = dto.Color,
+                TaskListId = backlogList.Id,
+                SortOrder = backlogList.Cards.Count + 1
+            };
 
             await _cardRepository.AddAsync(card);
             await _cardRepository.SaveChangesAsync();
