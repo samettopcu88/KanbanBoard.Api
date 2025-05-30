@@ -47,5 +47,34 @@ namespace KanbanBoard.Api.Controllers
                 return NotFound(new { message = ex.Message });
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllBoards()
+        {
+            try
+            {
+                var boards = await _boardService.GetAllBoardsAsync();
+                return Ok(new { message = "Tüm boardlar getirildi.", data = boards });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpDelete("{publicId}")]
+        public async Task<IActionResult> DeleteBoard(string publicId)
+        {
+            try
+            {
+                await _boardService.DeleteBoardAsync(publicId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
+
     }
 }

@@ -6,5 +6,8 @@ namespace KanbanBoard.Api.Services
     {
         Task<BoardDto> CreateBoardAsync(CreateBoardDto dto);
         Task<BoardDto> GetBoardByPublicIdAsync(string publicId);
+        Task<List<BoardDto>> GetAllBoardsAsync();
+        Task DeleteBoardAsync(string publicId);
+
     }
 }

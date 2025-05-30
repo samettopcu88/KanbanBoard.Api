@@ -7,5 +7,7 @@ namespace KanbanBoard.Api.Repositories
         Task<Board> GetByPublicIdAsync(string publicId);
         Task AddAsync(Board board);
         Task SaveChangesAsync();
+        Task<List<Board>> GetAllAsync();
+        Task DeleteAsync(Board board);
     }
 }

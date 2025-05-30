@@ -44,5 +44,21 @@ namespace KanbanBoard.Api.Services
 
             return _mapper.Map<BoardDto>(board);
         }
+
+        public async Task<List<BoardDto>> GetAllBoardsAsync()
+        {
+            var boards = await _boardRepository.GetAllAsync();
+            return _mapper.Map<List<BoardDto>>(boards);
+        }
+
+        public async Task DeleteBoardAsync(string publicId)
+        {
+            var board = await _boardRepository.GetByPublicIdAsync(publicId);
+            if (board == null)
+                throw new Exception("Board not found");
+
+            await _boardRepository.DeleteAsync(board);
+        }
+
     }
 }

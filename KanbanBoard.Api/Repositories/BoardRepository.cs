@@ -30,5 +30,19 @@ namespace KanbanBoard.Api.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<Board>> GetAllAsync()
+        {
+            return await _context.Boards
+                .Include(b => b.TaskLists)
+                .ThenInclude(t => t.Cards)
+                .ToListAsync();
+        }
+
+        public async Task DeleteAsync(Board board)
+        {
+            _context.Boards.Remove(board);
+            await _context.SaveChangesAsync();
+        }
     }
 }
