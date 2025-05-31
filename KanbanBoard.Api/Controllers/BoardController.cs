@@ -23,6 +23,9 @@ namespace KanbanBoard.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBoard([FromBody] CreateBoardDto dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
                 var result = await _boardService.CreateBoardAsync(dto);
