@@ -18,8 +18,12 @@ namespace KanbanBoard.Api.Services
 
         public async Task<BoardDto> CreateBoardAsync(CreateBoardDto dto)
         {
+            var existing = await _boardRepository.GetByPublicIdAsync(dto.PublicId);
+            if (existing != null)
+                throw new Exception("Bu PublicId zaten kullanımda.");
+
             var board = _mapper.Map<Board>(dto);
-            board.PublicId = Guid.NewGuid().ToString();
+            board.PublicId = dto.PublicId;
             board.CreatedAt = DateTime.UtcNow;
 
             board.TaskLists = new List<TaskList>
