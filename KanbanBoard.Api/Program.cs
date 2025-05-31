@@ -1,5 +1,4 @@
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using KanbanBoard.Api.Data;
 using KanbanBoard.Api.Mappings;
 using KanbanBoard.Api.Repositories;
@@ -11,8 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers()
-    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateBoardDtoValidator>());
+builder.Services.AddControllers();
+
+// FluentValidation Kayýtlarý (bir tanesi yetiyor)
+
+builder.Services.AddValidatorsFromAssemblyContaining<CreateBoardDtoValidator>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -25,9 +27,6 @@ builder.Services.AddScoped<ICardService, CardService>();
 builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 builder.Services.AddScoped<IBoardService, BoardService>();
 
-// FluentValidation Kayýtlarý
-
-builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 // builder.Services.AddValidatorsFromAssemblyContaining<CreateBoardDtoValidator>();
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using KanbanBoard.Api.Data;
 using KanbanBoard.Api.Dtos;
 using KanbanBoard.Api.Entities;
@@ -14,17 +15,34 @@ namespace KanbanBoard.Api.Controllers
     public class BoardController : ControllerBase
     {
         private readonly IBoardService _boardService;
+        private readonly IValidator<CreateBoardDto> _validator;
 
-        public BoardController(IBoardService boardService)
+        public BoardController(IBoardService boardService, IValidator<CreateBoardDto> validator)
         {
             _boardService = boardService;
+            _validator = validator;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateBoard([FromBody] CreateBoardDto dto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var validationResult = await _validator.ValidateAsync(dto);
+
+            if (!validationResult.IsValid)
+            {
+                var errors = validationResult.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(e => e.ErrorMessage).ToArray()
+                    );
+
+                return BadRequest(new
+                {
+                    message = "Doğrulama hatası oluştu.",
+                    errors
+                });
+            }
 
             try
             {
