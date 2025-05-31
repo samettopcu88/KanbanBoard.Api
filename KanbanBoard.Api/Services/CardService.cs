@@ -22,15 +22,19 @@ namespace KanbanBoard.Api.Services
 
         public async Task<CardDto> CreateCardAsync(CreateCardDto dto)
         {
-            // Backlog listesini bulmak için
-            var backlogList = await _context.TaskLists
-                .Include(l => l.Cards)
-                .Include(l => l.Board)
-                .Where(l => l.Board.PublicId == dto.BoardPublicId && l.Name == "Backlog")
-                .FirstOrDefaultAsync();
+            // Geçerli bir Board var mı kontrolü için
+            var board = await _context.Boards
+                .Include(b => b.TaskLists)
+                .ThenInclude(tl => tl.Cards)
+                .FirstOrDefaultAsync(b => b.PublicId == dto.BoardPublicId);
 
+            if (board == null)
+                throw new Exception("Belirtilen BoardPublicId ile eşleşen bir board bulunamadı.");
+
+            // Backlog listesinin varlığını kontrol için
+            var backlogList = board.TaskLists.FirstOrDefault(tl => tl.Name == "Backlog");
             if (backlogList == null)
-                throw new Exception("Backlog list not found for the given board.");
+                throw new Exception("İlgili board'da Backlog listesi bulunamadı.");
 
             var card = new Card
             {
