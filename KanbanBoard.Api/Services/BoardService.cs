@@ -44,7 +44,7 @@ namespace KanbanBoard.Api.Services
         {
             var board = await _boardRepository.GetByPublicIdAsync(publicId);
             if (board == null)
-                throw new Exception("Board not found");
+                throw new Exception("Board bulunamadı.");
 
             return _mapper.Map<BoardDto>(board);
         }
@@ -59,7 +59,7 @@ namespace KanbanBoard.Api.Services
         {
             var board = await _boardRepository.GetByPublicIdAsync(publicId);
             if (board == null)
-                throw new Exception("Board not found");
+                throw new Exception("Board bulunamadı.");
 
             await _boardRepository.DeleteAsync(board);
         }

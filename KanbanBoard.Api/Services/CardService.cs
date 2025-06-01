@@ -29,12 +29,12 @@ namespace KanbanBoard.Api.Services
                 .FirstOrDefaultAsync(b => b.PublicId == dto.BoardPublicId);
 
             if (board == null)
-                throw new Exception("Belirtilen BoardPublicId ile eşleşen bir board bulunamadı.");
+                throw new Exception("Belirtilen BoardPublicId ile eşleşen bir board bulunamadı");
 
             // Backlog listesinin varlığını kontrol için
             var backlogList = board.TaskLists.FirstOrDefault(tl => tl.Name == "Backlog");
             if (backlogList == null)
-                throw new Exception("İlgili board'da Backlog listesi bulunamadı.");
+                throw new Exception("İlgili board'da Backlog listesi bulunamadı");
 
             var card = new Card
             {
@@ -55,7 +55,7 @@ namespace KanbanBoard.Api.Services
         {
             var card = await _cardRepository.GetByIdAsync(dto.CardId);
             if (card == null)
-                throw new Exception("Card not found");
+                throw new Exception("Card bulunamadı.");
 
             var targetListCards = await _context.Cards
                 .Where(c => c.TaskListId == dto.TargetListId && c.Id != dto.CardId)
@@ -76,15 +76,21 @@ namespace KanbanBoard.Api.Services
 
         public async Task<List<CardDto>> GetCardsByListAsync(int taskListId)
         {
-            var cards = await _cardRepository.GetByTaskListIdAsync(taskListId);
-            return _mapper.Map<List<CardDto>>(cards);
+            var taskList = await _context.TaskLists
+                .Include(tl => tl.Cards)
+                .FirstOrDefaultAsync(tl => tl.Id == taskListId);
+
+            if (taskList == null)
+                return new List<CardDto>();
+
+            return _mapper.Map<List<CardDto>>(taskList.Cards);
         }
 
         public async Task DeleteCardAsync(int id)
         {
             var card = await _cardRepository.GetByIdAsync(id);
             if (card == null)
-                throw new Exception("Card not found");
+                throw new Exception("Card bulunamadı.");
 
             await _cardRepository.DeleteAsync(card);
             await _cardRepository.SaveChangesAsync();
@@ -94,7 +100,7 @@ namespace KanbanBoard.Api.Services
         {
             var card = await _cardRepository.GetByIdAsync(dto.Id);
             if (card == null)
-                throw new Exception("Card not found");
+                throw new Exception("Card bulunamadı.");
 
             card.Title = dto.Title;
             card.Description = dto.Description;

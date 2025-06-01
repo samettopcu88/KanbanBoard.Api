@@ -26,11 +26,15 @@ namespace KanbanBoard.Api.Controllers
             try
             {
                 var createdCard = await _cardService.CreateCardAsync(dto);
-                return Ok(createdCard);
+                return Ok(new
+                {
+                    message = "Card başarıyla oluşturuldu.",
+                    data = createdCard
+                });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -44,15 +48,28 @@ namespace KanbanBoard.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
         [HttpGet("list/{taskListId}")]
         public async Task<IActionResult> GetCardsByList(int taskListId)
         {
-            var cards = await _cardService.GetCardsByListAsync(taskListId);
-            return Ok(cards);
+            try
+            {
+                var cards = await _cardService.GetCardsByListAsync(taskListId);
+
+                if (cards == null || cards.Count == 0)
+                {
+                    return Ok(new { message = "Task listesi boş ya da bulunamadı.", data = cards });
+                }
+
+                return Ok(new { message = "Kartlar başarıyla getirildi.", data = cards });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpDelete("{id}")]
@@ -61,11 +78,11 @@ namespace KanbanBoard.Api.Controllers
             try
             {
                 await _cardService.DeleteCardAsync(id);
-                return NoContent();
+                return Ok(new { message = "Card başarıyla silindi." });
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new { message = ex.Message });
             }
         }
 
@@ -75,11 +92,15 @@ namespace KanbanBoard.Api.Controllers
             try
             {
                 var updatedCard = await _cardService.UpdateCardAsync(dto);
-                return Ok(updatedCard);
+                return Ok(new
+                {
+                    message = "Card başarıyla güncellendi.",
+                    data = updatedCard
+                });
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new { message = ex.Message });
             }
         }
     }

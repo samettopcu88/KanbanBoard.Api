@@ -89,7 +89,7 @@ namespace KanbanBoard.Api.Controllers
             try
             {
                 await _boardService.DeleteBoardAsync(publicId);
-                return NoContent();
+                return Ok(new { message = "Board başarıyla silindi." });
             }
             catch (Exception ex)
             {
