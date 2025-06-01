@@ -1,0 +1,606 @@
+{
+	"info": {
+		"_postman_id": "60e3bc04-df50-4402-a2b4-13b74e3b75ab",
+		"name": "KanbanBoard.Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45143896",
+		"_collection_link": "https://samet-2813865.postman.co/workspace/Samet's-Workspace~7475346f-b4eb-4093-8934-1200d5aa170a/collection/45143896-60e3bc04-df50-4402-a2b4-13b74e3b75ab?action=share&source=collection_link&creator=45143896"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "Board",
+					"item": [
+						{
+							"name": "{publicId}",
+							"item": [
+								{
+									"name": "/api/Board/:publicId",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:7012/api/Board/denemepublic433",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7012",
+											"path": [
+												"api",
+												"Board",
+												"denemepublic433"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/Board/:publicId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"Board",
+														":publicId"
+													],
+													"variable": [
+														{
+															"key": "publicId"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "/api/Board/:publicId",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:7012/api/Board/denemepublic733",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7012",
+											"path": [
+												"api",
+												"Board",
+												"denemepublic733"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/Board/:publicId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"Board",
+														":publicId"
+													],
+													"variable": [
+														{
+															"key": "publicId"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "/api/Board",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"denemeBoard733\",\n  \"publicId\": \"denemepublic733\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7012/api/Board",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7012",
+									"path": [
+										"api",
+										"Board"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"Lorem\",\n  \"publicId\": \"tempor ut\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/Board",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Board"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "/api/Board",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7012/api/Board/",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7012",
+									"path": [
+										"api",
+										"Board",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/Board",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Board"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Card",
+					"item": [
+						{
+							"name": "move",
+							"item": [
+								{
+									"name": "/api/Card/move",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"cardId\": 6,\n  \"targetListId\": 2,\n  \"newSortOrder\": 2\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7012/api/Card/move",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7012",
+											"path": [
+												"api",
+												"Card",
+												"move"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"cardId\": -72772336,\n  \"targetListId\": 94999565,\n  \"newSortOrder\": -92262096\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/Card/move",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"Card",
+														"move"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "list",
+							"item": [
+								{
+									"name": "{taskListId}",
+									"item": [
+										{
+											"name": "/api/Card/list/:taskListId",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "https://localhost:7012/api/Card/list/33",
+													"protocol": "https",
+													"host": [
+														"localhost"
+													],
+													"port": "7012",
+													"path": [
+														"api",
+														"Card",
+														"list",
+														"33"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "OK",
+													"originalRequest": {
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/api/Card/list/:taskListId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"Card",
+																"list",
+																":taskListId"
+															],
+															"variable": [
+																{
+																	"key": "taskListId"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "/api/Card/:id",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:7012/api/Card/11",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7012",
+											"path": [
+												"api",
+												"Card",
+												"11"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/Card/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"Card",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "/api/Card",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"deneme888\",\n  \"description\": \"denemeCardDesc888\",\n  \"color\": \"blue\",\n  \"boardPublicId\": \"denemepublic433\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7012/api/Card",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7012",
+									"path": [
+										"api",
+										"Card"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"title\": \"Excepteur\",\n  \"description\": \"in Duis fugiat qui\",\n  \"color\": \"non cillum\",\n  \"boardPublicId\": \"esse mollit\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/Card",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Card"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "/api/Card",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 14,\n  \"title\": \"inet ad\",\n  \"description\": \"cupidatat\",\n  \"color\": \"pink\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7012/api/Card",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7012",
+									"path": [
+										"api",
+										"Card"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"id\": -5793280,\n  \"title\": \"in ad\",\n  \"description\": \"aliquip cupidatat\",\n  \"color\": \"dolor\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/Card",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Card"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "/"
+		}
+	]
+}
