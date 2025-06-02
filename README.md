@@ -63,3 +63,10 @@ Enter the update-database command in the Package Manager Console
 
 Start the project by pressing F5 or clicking on the green “Start” button.
 
+---
+
+## Project Summary
+
+A detailed project summary describing the objectives, technology stack, development process and features:
+
+File: ProjectSummary.md
