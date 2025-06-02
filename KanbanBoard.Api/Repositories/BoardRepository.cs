@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KanbanBoard.Api.Repositories
 {
+    // Board veritabanı işlemlerini yöneten repository sınıfı
     public class BoardRepository : IBoardRepository
     {
         private readonly AppDbContext _context;
@@ -13,12 +14,13 @@ namespace KanbanBoard.Api.Repositories
             _context = context;
         }
 
+        // Verilen publicId ile eşleşen board'u, ilişkili TaskList ve Card'larıyla birlikte getirir
         public async Task<Board> GetByPublicIdAsync(string publicId)
         {
             return await _context.Boards
                 .Include(b => b.TaskLists)
                 .ThenInclude(tl => tl.Cards)
-                .FirstOrDefaultAsync(b => b.PublicId == publicId);
+                .FirstAsync(b => b.PublicId == publicId);
         }
 
         public async Task AddAsync(Board board)
@@ -31,6 +33,7 @@ namespace KanbanBoard.Api.Repositories
             await _context.SaveChangesAsync();
         }
 
+        // Tüm boardları, ilişkili TaskList ve Card'larıyla birlikte liste halinde getirir
         public async Task<List<Board>> GetAllAsync()
         {
             return await _context.Boards
@@ -39,10 +42,7 @@ namespace KanbanBoard.Api.Repositories
                 .ToListAsync();
         }
 
-        public async Task DeleteAsync(Board board)
-        {
+        public async Task DeleteAsync(Board board) =>
             _context.Boards.Remove(board);
-            await _context.SaveChangesAsync();
-        }
     }
 }

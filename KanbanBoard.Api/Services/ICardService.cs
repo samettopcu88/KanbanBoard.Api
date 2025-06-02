@@ -2,6 +2,7 @@
 
 namespace KanbanBoard.Api.Services
 {
+    // Card işlemlerini tanımlayan servis arayüzü
     public interface ICardService
     {
         Task<CardDto> CreateCardAsync(CreateCardDto dto);

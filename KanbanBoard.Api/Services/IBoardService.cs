@@ -2,6 +2,7 @@
 
 namespace KanbanBoard.Api.Services
 {
+    // Board işlemlerini tanımlayan servis arayüzü
     public interface IBoardService
     {
         Task<BoardDto> CreateBoardAsync(CreateBoardDto dto);

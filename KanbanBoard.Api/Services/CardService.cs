@@ -11,8 +11,9 @@ namespace KanbanBoard.Api.Services
     {
         private readonly ICardRepository _cardRepository;
         private readonly AppDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly IMapper _mapper; // Nesne dönüşümleri için AutoMapper
 
+        // Constructor yapısı bağımlılıkları constructor üzerinden alırız (Dependency Injection)
         public CardService(ICardRepository cardRepository, AppDbContext context, IMapper mapper)
         {
             _cardRepository = cardRepository;
@@ -22,10 +23,10 @@ namespace KanbanBoard.Api.Services
 
         public async Task<CardDto> CreateCardAsync(CreateCardDto dto)
         {
-            // Geçerli bir Board var mı kontrolü için
+            // Geçerli bir Board var mı kontrolü için yapıyoruz ve eager loading ile task list'leri ve card'ları getiriyoruz
             var board = await _context.Boards
-                .Include(b => b.TaskLists)
-                .ThenInclude(tl => tl.Cards)
+                .Include(b => b.TaskLists) // Board içindeki TaskList'ler dahil ediliyor
+                .ThenInclude(tl => tl.Cards) // Her bir TaskList'in içindeki card'lar da dahil ediliyor
                 .FirstOrDefaultAsync(b => b.PublicId == dto.BoardPublicId);
 
             if (board == null)
@@ -36,37 +37,43 @@ namespace KanbanBoard.Api.Services
             if (backlogList == null)
                 throw new Exception("İlgili board'da Backlog listesi bulunamadı");
 
+            // Yeni kart nesnesi oluşturuluyor ve Backlog'a atanıyor
             var card = new Card
             {
                 Title = dto.Title,
                 Description = dto.Description,
                 Color = dto.Color,
                 TaskListId = backlogList.Id,
+                // Kart sıralaması için mevcut kart sayısına 1 ekleniyor (en sona eklenmiş oluyor)
                 SortOrder = backlogList.Cards.Count + 1
             };
 
             await _cardRepository.AddAsync(card);
             await _cardRepository.SaveChangesAsync();
 
-            return _mapper.Map<CardDto>(card);
+            return _mapper.Map<CardDto>(card); // Entity to DTO dönüşümü
         }
 
         public async Task<CardDto> MoveCardAsync(UpdateCardPositionDto dto)
         {
+            // Taşınacak kart bulunuyor
             var card = await _cardRepository.GetByIdAsync(dto.CardId);
             if (card == null)
                 throw new Exception("Card bulunamadı.");
 
+            // Diğer kartlar çekiliyor (taşınan hariç)
             var targetListCards = await _context.Cards
                 .Where(c => c.TaskListId == dto.TargetListId && c.Id != dto.CardId)
                 .OrderBy(c => c.SortOrder)
                 .ToListAsync();
 
+            // Yeni sıraya denk gelen ve sonrası tüm kartların sırası 1 kaydırılıyor
             foreach (var c in targetListCards.Where(c => c.SortOrder >= dto.NewSortOrder))
             {
                 c.SortOrder += 1;
             }
 
+            // Kartın yeni listeye ve sırasına taşınması işlemleri sadece 2 işlem olduğu için mapping yapmadım manuel çevirdim
             card.TaskListId = dto.TargetListId;
             card.SortOrder = dto.NewSortOrder;
 
@@ -76,6 +83,7 @@ namespace KanbanBoard.Api.Services
 
         public async Task<List<CardDto>> GetCardsByListAsync(int taskListId)
         {
+            // İlgili task list ve içindeki kartlar eager loading ile alınıyor
             var taskList = await _context.TaskLists
                 .Include(tl => tl.Cards)
                 .FirstOrDefaultAsync(tl => tl.Id == taskListId);
@@ -88,10 +96,12 @@ namespace KanbanBoard.Api.Services
 
         public async Task DeleteCardAsync(int id)
         {
+            // Silinecek card id'ye göre bulunuyor
             var card = await _cardRepository.GetByIdAsync(id);
             if (card == null)
                 throw new Exception("Card bulunamadı.");
 
+            // Bulunan card siliniyor
             await _cardRepository.DeleteAsync(card);
             await _cardRepository.SaveChangesAsync();
         }
@@ -102,12 +112,12 @@ namespace KanbanBoard.Api.Services
             if (card == null)
                 throw new Exception("Card bulunamadı.");
 
-            card.Title = dto.Title;
-            card.Description = dto.Description;
-            card.Color = dto.Color;
+            // DTO'daki verileri var olan card entity'sine günceller
+            _mapper.Map(dto, card);
 
             await _cardRepository.SaveChangesAsync();
 
+            // Güncellenen kartı DTO olarak döndür
             return _mapper.Map<CardDto>(card);
         }
     }

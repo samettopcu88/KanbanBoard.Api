@@ -15,6 +15,7 @@ namespace KanbanBoard.Api.Controllers
     {
         private readonly ICardService _cardService;
 
+        // Card işlemleri için servis katmanı dependency injection ile alınır
         public CardController(ICardService cardService)
         {
             _cardService = cardService;
@@ -26,6 +27,8 @@ namespace KanbanBoard.Api.Controllers
             try
             {
                 var createdCard = await _cardService.CreateCardAsync(dto);
+
+                // Başarılı olursa kart bilgisiyle birlikte 200 OK döner
                 return Ok(new
                 {
                     message = "Card başarıyla oluşturuldu.",
@@ -34,16 +37,20 @@ namespace KanbanBoard.Api.Controllers
             }
             catch (Exception ex)
             {
+                // Servis katmanından gelen hata client'a BadRequest olarak döner
                 return BadRequest(new { message = ex.Message });
             }
         }
 
+        // Belirli bir kartı başka bir task listesine taşır
         [HttpPut("move")]
         public async Task<IActionResult> MoveCard([FromBody] UpdateCardPositionDto dto)
         {
             try
             {
                 var updatedCard = await _cardService.MoveCardAsync(dto);
+
+                // Yeni konumuyla birlikte güncellenmiş kart DTO’su döner
                 return Ok(updatedCard);
             }
             catch (Exception ex)
@@ -52,6 +59,7 @@ namespace KanbanBoard.Api.Controllers
             }
         }
 
+        // Belirli bir task listesine ait kartları getirir.
         [HttpGet("list/{taskListId}")]
         public async Task<IActionResult> GetCardsByList(int taskListId)
         {
@@ -59,11 +67,13 @@ namespace KanbanBoard.Api.Controllers
             {
                 var cards = await _cardService.GetCardsByListAsync(taskListId);
 
+                // Liste boş ya da bulunamadı ise mesaj gönderir
                 if (cards == null || cards.Count == 0)
                 {
                     return Ok(new { message = "Task listesi boş ya da bulunamadı.", data = cards });
                 }
 
+                // Eğer listede card varsa
                 return Ok(new { message = "Kartlar başarıyla getirildi.", data = cards });
             }
             catch (Exception ex)
@@ -82,6 +92,7 @@ namespace KanbanBoard.Api.Controllers
             }
             catch (Exception ex)
             {
+                // Kart bulunamazsa 404 NotFound döner
                 return NotFound(new { message = ex.Message });
             }
         }

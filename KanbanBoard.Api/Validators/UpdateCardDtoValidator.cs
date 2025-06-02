@@ -5,6 +5,7 @@ namespace KanbanBoard.Api.Validators
 {
     public class UpdateCardDtoValidator : AbstractValidator<UpdateCardDto>
     {
+        // UpdateCardDto için geçerlilik kurallarını belirleyen FluentValidation sınıfı
         public UpdateCardDtoValidator()
         {
             RuleFor(x => x.Id)

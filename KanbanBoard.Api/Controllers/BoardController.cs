@@ -17,6 +17,7 @@ namespace KanbanBoard.Api.Controllers
         private readonly IBoardService _boardService;
         private readonly IValidator<CreateBoardDto> _validator;
 
+        // Dependency Injection ile Board servisi ve CreateBoardDto için validator alınır
         public BoardController(IBoardService boardService, IValidator<CreateBoardDto> validator)
         {
             _boardService = boardService;
@@ -26,10 +27,12 @@ namespace KanbanBoard.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBoard([FromBody] CreateBoardDto dto)
         {
+            // İstekle gelen DTO doğrulanır
             var validationResult = await _validator.ValidateAsync(dto);
 
             if (!validationResult.IsValid)
             {
+                // Eğer doğrulama başarısızsa hata mesajları alınır PropertyName'e göre gruplanır ve client'a döner. ProtertyName FluentValidation kütüphanesinden gelir
                 var errors = validationResult.Errors
                     .GroupBy(e => e.PropertyName)
                     .ToDictionary(
@@ -46,11 +49,13 @@ namespace KanbanBoard.Api.Controllers
 
             try
             {
+                // Board servisi kullanılarak yeni board oluşturulur
                 var result = await _boardService.CreateBoardAsync(dto);
                 return Ok(new { message = "Board başarıyla oluşturuldu.", data = result });
             }
             catch (Exception ex)
             {
+                // Oluşan hatalar client'a BadRequest olarak döner
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -60,11 +65,13 @@ namespace KanbanBoard.Api.Controllers
         {
             try
             {
+                // Verilen publicId ile board verisi servis üzerinden alınır
                 var result = await _boardService.GetBoardByPublicIdAsync(publicId);
                 return Ok(new { message = "Board başarıyla alındı.", data = result });
             }
             catch (Exception ex)
             {
+                // Eğer board bulunamazsa NotFound döner
                 return NotFound(new { message = ex.Message });
             }
         }
@@ -74,6 +81,7 @@ namespace KanbanBoard.Api.Controllers
         {
             try
             {
+                // Tüm boardlar servis aracılığıyla getirilir
                 var boards = await _boardService.GetAllBoardsAsync();
                 return Ok(new { message = "Tüm boardlar getirildi.", data = boards });
             }
@@ -88,11 +96,13 @@ namespace KanbanBoard.Api.Controllers
         {
             try
             {
+                // Verilen publicId'ye ait board servis ile silinir
                 await _boardService.DeleteBoardAsync(publicId);
                 return Ok(new { message = "Board başarıyla silindi." });
             }
             catch (Exception ex)
             {
+                // Board bulunamazsa NotFound döner
                 return NotFound(new { message = ex.Message });
             }
         }

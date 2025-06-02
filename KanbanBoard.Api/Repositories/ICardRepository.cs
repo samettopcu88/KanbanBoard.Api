@@ -2,6 +2,7 @@
 
 namespace KanbanBoard.Api.Repositories
 {
+    // Card entity'si ile ilgili veri erişim işlemlerini tanımlayan repository arayüzü
     public interface ICardRepository
     {
         Task<Card> GetByIdAsync(int id);

@@ -4,6 +4,7 @@ using KanbanBoard.Api.Entities;
 
 namespace KanbanBoard.Api.Mappings
 {
+    // AutoMapper konfigürasyonu için kullanılan profil sınıfı
     public class MappingProfile : Profile
     {
         public MappingProfile()
@@ -13,6 +14,7 @@ namespace KanbanBoard.Api.Mappings
             CreateMap<CreateCardDto, Card>().ReverseMap();
             CreateMap<Card, CardDto>().ReverseMap();
             CreateMap<TaskList, TaskListDto>().ReverseMap();
+            CreateMap<UpdateCardDto, Card>().ReverseMap();
         }
     }
 }
