@@ -1,18 +1,21 @@
 # KanbanBoard API
 
-A clean and modular Kanban board RESTful API built with ASP.NET Core. This project is designed using layered architecture (Repository-Service-Controller), AutoMapper, and FluentValidation. It's ideal as a project foundation for Kanban-style task management applications.
+A RESTful API for a Kanban-style task management system where tasks can be moved between different lists using a drag-and-drop approach. This backend project is built with a clean, modular architecture using ASP.NET Core Web API.
 
 ---
 
 ## Features
 
-- Create boards with default task lists (Backlog, To Do, In Progress, Done)
-- Add, move, and delete cards
-- Retrieve boards by public ID
-- Entity-DTO separation using AutoMapper
+- Create new boards
+- Auto-create default task lists (Backlog, To Do, In Progress, Done) when a board is created
+- Create, delete, update, and move cards between lists
+- Cards are automatically set to appear in the “Backlog” list
+- Access boards via a custom PublicId
+- The Public Id can be customized by the user and its uniqueness is checked.
+- Use of DTOs and AutoMapper for data transformation
 - Input validation with FluentValidation
-- Clean architecture (Repository & Service layers)
-- Swagger integrated for API testing
+- Layered architecture (Controller - Service - Repository)
+- Swagger UI for API testing
 
 ---
 
@@ -23,7 +26,8 @@ A clean and modular Kanban board RESTful API built with ASP.NET Core. This proje
 - SQL Server
 - AutoMapper
 - FluentValidation
-- Swagger (Swashbuckle)
+- Swagger
+- Postman
 
 ---
 
@@ -38,6 +42,9 @@ A clean and modular Kanban board RESTful API built with ASP.NET Core. This proje
 
 1. Clone the repository:
 
+Clone the repo using the “Clone a repository” tab in Visual Studio.
+
+or with using GitBash:
 bash
 git clone https://github.com/samettopcu88/KanbanBoard.Api.git
 cd KanbanBoard.Api
@@ -45,13 +52,21 @@ cd KanbanBoard.Api
 2. Update appsettings.json with your own SQL Server connection string:
 
 "ConnectionStrings": {
-  "DefaultConnection": "Server=localhost;Database=KanbanBoardDb;Trusted_Connection=True;"
+  "DefaultConnection": "Server=(yourlocalserver);Database=KanbanBoardDb;Trusted_Connection=True;"
 }
 
 3. Apply migrations and create the database:
 
-dotnet ef database update
+Enter the update-database command in the Package Manager Console
 
 4. Run the project:
 
-dotnet run
+Start the project by pressing F5 or clicking on the green “Start” button.
+
+---
+
+## Project Summary
+
+A detailed project summary describing the objectives, technology stack, development process and features:
+
+File: ProjectSummary.md
