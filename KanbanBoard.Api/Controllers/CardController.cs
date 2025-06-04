@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using KanbanBoard.Api.Data;
 using KanbanBoard.Api.Dtos;
 using KanbanBoard.Api.Entities;
@@ -14,21 +15,44 @@ namespace KanbanBoard.Api.Controllers
     public class CardController : ControllerBase
     {
         private readonly ICardService _cardService;
+        private readonly IValidator<CreateCardDto> _validator;
+        private readonly IValidator<UpdateCardDto> _updateValidator;
 
-        // Card işlemleri için servis katmanı dependency injection ile alınır
-        public CardController(ICardService cardService)
+        // Card işlemleri için servis katmanı dependency injection ile alınır ve CreateCardDto için validator alınır
+        public CardController(ICardService cardService, IValidator<CreateCardDto> validator, IValidator<UpdateCardDto> updateValidator)
         {
             _cardService = cardService;
+            _validator = validator;
+            _updateValidator = updateValidator;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateCard([FromBody] CreateCardDto dto)
         {
+            // FluentValidation ile DTO doğrulama işlemi
+            var validationResult = await _validator.ValidateAsync(dto);
+
+            if (!validationResult.IsValid)
+            {
+                // Hatalar field bazında gruplanıyor
+                var errors = validationResult.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(e => e.ErrorMessage).ToArray()
+                    );
+
+                return BadRequest(new
+                {
+                    message = "Doğrulama hatası oluştu.",
+                    errors
+                });
+            }
+
             try
             {
                 var createdCard = await _cardService.CreateCardAsync(dto);
 
-                // Başarılı olursa kart bilgisiyle birlikte 200 OK döner
                 return Ok(new
                 {
                     message = "Card başarıyla oluşturuldu.",
@@ -37,7 +61,6 @@ namespace KanbanBoard.Api.Controllers
             }
             catch (Exception ex)
             {
-                // Servis katmanından gelen hata client'a BadRequest olarak döner
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -100,6 +123,24 @@ namespace KanbanBoard.Api.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateCard([FromBody] UpdateCardDto dto)
         {
+            var validationResult = await _updateValidator.ValidateAsync(dto);
+
+            if (!validationResult.IsValid)
+            {
+                var errors = validationResult.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(e => e.ErrorMessage).ToArray()
+                    );
+
+                return BadRequest(new
+                {
+                    message = "Doğrulama hatası oluştu.",
+                    errors
+                });
+            }
+
             try
             {
                 var updatedCard = await _cardService.UpdateCardAsync(dto);

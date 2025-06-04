@@ -37,6 +37,12 @@ namespace KanbanBoard.Api.Services
             if (backlogList == null)
                 throw new Exception("İlgili board'da Backlog listesi bulunamadı");
 
+            // Backlog listesi içindeki en yüksek SortOrder değerini buluyoruz
+            // Hiç kart yoksa 0 kabul ediyoruz ve yeni kart 1. sırada olacak şekilde ekleniyor
+            var maxSortOrder = await _context.Cards                           // burası yeni
+                .Where(c => c.TaskListId == backlogList.Id)                   // burası yeni
+                .MaxAsync(c => (int?)c.SortOrder) ?? 0;                        // burası yeni
+
             // Yeni kart nesnesi oluşturuluyor ve Backlog'a atanıyor
             var card = new Card
             {
@@ -44,8 +50,10 @@ namespace KanbanBoard.Api.Services
                 Description = dto.Description,
                 Color = dto.Color,
                 TaskListId = backlogList.Id,
-                // Kart sıralaması için mevcut kart sayısına 1 ekleniyor (en sona eklenmiş oluyor)
-                SortOrder = backlogList.Cards.Count + 1
+                SortOrder = maxSortOrder + 1 // Yeni kart en sona ekleniyor   // burası yeni
+
+                
+                //SortOrder = backlogList.Cards.Count + 1 (kart silindiğin durumda hata verebilir diye kaldırdım)
             };
 
             await _cardRepository.AddAsync(card);

@@ -20,7 +20,7 @@ namespace KanbanBoard.Api.Repositories
             return await _context.Boards
                 .Include(b => b.TaskLists)
                 .ThenInclude(tl => tl.Cards)
-                .FirstAsync(b => b.PublicId == publicId);
+                .FirstOrDefaultAsync(b => b.PublicId == publicId);
         }
 
         public async Task AddAsync(Board board)

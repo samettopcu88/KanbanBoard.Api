@@ -33,11 +33,13 @@ namespace KanbanBoard.Api.Controllers
             if (!validationResult.IsValid)
             {
                 // Eğer doğrulama başarısızsa hata mesajları alınır PropertyName'e göre gruplanır ve client'a döner. ProtertyName FluentValidation kütüphanesinden gelir
+                // Tüm hataları, hatanın olduğu alan adına göre grupluyoruz
                 var errors = validationResult.Errors
                     .GroupBy(e => e.PropertyName)
+                    // Her alan için, o alandaki hata mesajlarını liste olarak alıp sözlüğe çeviriyoruz
                     .ToDictionary(
-                        g => g.Key,
-                        g => g.Select(e => e.ErrorMessage).ToArray()
+                        g => g.Key,     // Anahtar: Alan adı (örneğin "Email")
+                        g => g.Select(e => e.ErrorMessage).ToArray()    // Değer: O alandaki hata mesajları dizisi
                     );
 
                 return BadRequest(new
