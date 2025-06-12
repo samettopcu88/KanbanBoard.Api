@@ -10,11 +10,11 @@ namespace KanbanBoard.Api.Mappings
         public MappingProfile()
         {
             CreateMap<Board, BoardDto>().ReverseMap();
-            CreateMap<CreateBoardDto, Board>().ReverseMap();
-            CreateMap<CreateCardDto, Card>().ReverseMap();
+            CreateMap<CreateBoardDto, Board>().ReverseMap(); // *
+            CreateMap<CreateCardDto, Card>().ReverseMap(); // *
             CreateMap<Card, CardDto>().ReverseMap();
             CreateMap<TaskList, TaskListDto>().ReverseMap();
-            CreateMap<UpdateCardDto, Card>().ReverseMap();
+            CreateMap<UpdateCardDto, Card>().ReverseMap(); // *
         }
     }
 }

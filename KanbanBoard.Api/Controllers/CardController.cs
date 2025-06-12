@@ -30,6 +30,7 @@ namespace KanbanBoard.Api.Controllers
         public async Task<IActionResult> CreateCard([FromBody] CreateCardDto dto)
         {
             // FluentValidation ile DTO doğrulama işlemi
+            // Bu satır dto içindeki alanların FluentValidation kurallarına uygun olup olmadığını kontrol eder ve sonucu validationResult'a atar
             var validationResult = await _validator.ValidateAsync(dto);
 
             if (!validationResult.IsValid)

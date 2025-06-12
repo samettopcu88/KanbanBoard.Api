@@ -18,8 +18,8 @@ namespace KanbanBoard.Api.Repositories
         public async Task<Board> GetByPublicIdAsync(string publicId)
         {
             return await _context.Boards
-                .Include(b => b.TaskLists)
-                .ThenInclude(tl => tl.Cards)
+                .Include(b => b.TaskLists) // Board nesnesinin altındaki TaskList'i alırız
+                .ThenInclude(tl => tl.Cards) // TaskList altındaki Card'ları getiririz
                 .FirstOrDefaultAsync(b => b.PublicId == publicId);
         }
 

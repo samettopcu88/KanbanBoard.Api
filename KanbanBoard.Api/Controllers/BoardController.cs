@@ -24,8 +24,10 @@ namespace KanbanBoard.Api.Controllers
             _validator = validator;
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> CreateBoard([FromBody] CreateBoardDto dto)
+        public async Task<IActionResult> CreateBoard([FromBody] CreateBoardDto dto) // [FromBody] attribute'u client'tan gelen JSON verisini CreateBoardDto nesnesine dönüştürür
+
         {
             // İstekle gelen DTO doğrulanır
             var validationResult = await _validator.ValidateAsync(dto);
@@ -38,7 +40,7 @@ namespace KanbanBoard.Api.Controllers
                     .GroupBy(e => e.PropertyName)
                     // Her alan için, o alandaki hata mesajlarını liste olarak alıp sözlüğe çeviriyoruz
                     .ToDictionary(
-                        g => g.Key,     // Anahtar: Alan adı (örneğin "Email")
+                        g => g.Key,     // Anahtar
                         g => g.Select(e => e.ErrorMessage).ToArray()    // Değer: O alandaki hata mesajları dizisi
                     );
 

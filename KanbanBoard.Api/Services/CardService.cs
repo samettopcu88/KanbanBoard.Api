@@ -70,12 +70,14 @@ namespace KanbanBoard.Api.Services
                 throw new Exception("Card bulunamadı.");
 
             // Diğer kartlar çekiliyor (taşınan hariç)
+            // Taşınacak kartın pozisyonunu oluştururken  diğer kartların sırasını kaydırmak için kullanılıcak
             var targetListCards = await _context.Cards
                 .Where(c => c.TaskListId == dto.TargetListId && c.Id != dto.CardId)
                 .OrderBy(c => c.SortOrder)
                 .ToListAsync();
 
             // Yeni sıraya denk gelen ve sonrası tüm kartların sırası 1 kaydırılıyor
+            // Yani Hedef Task List'te bulunan ve yeni sıradan (NewSortOrder) daha büyük veya eşit sıradaki tüm kartları al ve her birinin sırasını bir artır
             foreach (var c in targetListCards.Where(c => c.SortOrder >= dto.NewSortOrder))
             {
                 c.SortOrder += 1;

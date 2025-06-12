@@ -19,7 +19,7 @@ namespace KanbanBoard.Api.Services
         public async Task<BoardDto> CreateBoardAsync(CreateBoardDto dto)
         {
             // Aynı PublicId'ye sahip bir board var mı kontrol ediliyor
-            var existing = await _boardRepository.GetByPublicIdAsync(dto.PublicId);
+            var existing = await _boardRepository.GetByPublicIdAsync(dto.PublicId); // Eğer böyle bir kayıt varsa o board nesnesini getirir ve existing içine atar
             if (existing != null)
                 throw new Exception("Bu PublicId zaten kullanımda.");
 
